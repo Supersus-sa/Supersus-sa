@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verificación Manual - SuperSus SA</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --red: #ff2b46;
+      --blue: #2f7dff;
+      --panel: rgba(8, 10, 18, .86);
+      --text: #f7f8ff;
+      --muted: #b6bdd2;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-family: Inter, Arial, sans-serif;
+      color: var(--text);
+      background:
+        linear-gradient(rgba(2, 3, 8, .48), rgba(2, 3, 8, .72)),
+        url("https://i.ibb.co/WWcZt6Br/fondo.png") center/cover fixed no-repeat;
+    }
+
+    main {
+      flex: 1;
+      display: grid;
+      place-items: center;
+      padding: 34px 18px;
+    }
+
+    .verification-card {
+      position: relative;
+      width: min(720px, 100%);
+      padding: 38px;
+      border-radius: 24px;
+      background: var(--panel);
+      border: 1px solid rgba(255,255,255,.16);
+      box-shadow:
+        -10px 0 35px rgba(255, 43, 70, .30),
+        10px 0 35px rgba(47, 125, 255, .30),
+        0 25px 70px rgba(0,0,0,.62);
+      backdrop-filter: blur(15px);
+      overflow: hidden;
+    }
+
+    .verification-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      padding: 2px;
+      border-radius: inherit;
+      background: linear-gradient(120deg, var(--red), transparent 38%, transparent 62%, var(--blue));
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+    }
+
+    .title-frame {
+      margin-bottom: 24px;
+      padding: 18px 20px;
+      border-radius: 16px;
+      text-align: center;
+      background: rgba(0,0,0,.34);
+      border-left: 3px solid var(--red);
+      border-right: 3px solid var(--blue);
+      box-shadow:
+        inset 14px 0 24px rgba(255,43,70,.08),
+        inset -14px 0 24px rgba(47,125,255,.08);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.5rem, 4vw, 2.25rem);
+      line-height: 1.25;
+      text-shadow:
+        0 0 13px rgba(255,43,70,.38),
+        0 0 20px rgba(47,125,255,.28);
+    }
+
+    .description {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.02rem;
+      line-height: 1.72;
+      text-align: center;
+    }
+
+    .consent-box {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin: 26px 0 20px;
+      padding: 16px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.055);
+      border: 1px solid rgba(255,255,255,.09);
+    }
+
+    .consent-box input {
+      margin-top: 3px;
+      width: 18px;
+      height: 18px;
+      accent-color: var(--blue);
+    }
+
+    button {
+      width: 100%;
+      padding: 16px 20px;
+      border: 0;
+      border-radius: 14px;
+      font-size: 1.04rem;
+      font-weight: 900;
+      letter-spacing: .08em;
+      color: white;
+      background: linear-gradient(100deg, #cf1730, #7f244f 49%, #245ecf);
+      box-shadow:
+        0 0 24px rgba(255,43,70,.20),
+        0 0 28px rgba(47,125,255,.16);
+      cursor: pointer;
+      transition: .18s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.12);
+    }
+
+    .fade {
+      animation: fadeIn .45s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    footer {
+      padding: 18px;
+      text-align: center;
+      color: #aeb5c7;
+      background: rgba(4,5,10,.76);
+      border-top: 1px solid rgba(255,255,255,.08);
+      backdrop-filter: blur(10px);
+    }
+
+    @media (max-width: 560px) {
+      .verification-card {
+        padding: 25px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="verification-card" id="verificationCard">
+      <div class="title-frame">
+        <h1 id="title">Solicitud de Verificación Manual - SuperSus SA Server</h1>
+      </div>
+
+      <p class="description" id="description">
+        Al presionar en Verificar, se recopilarán datos de conexión, así como idioma,
+        zona horaria y país, con la finalidad de identificar la transparencia de tu
+        cuenta de Discord y obtener la verificación.
+      </p>
+
+      <label class="consent-box" id="consentBox">
+        <input id="consent" type="checkbox">
+        <span>Acepto la recopilación de estos datos para fines de seguridad.</span>
+      </label>
+
+      <button id="verifyButton" type="button">VERIFICAR</button>
+    </section>
+  </main>
+
+  <footer>
+    Supersus SA Discord Server ©
+  </footer>
+
+  <script>
+    const verifyButton = document.getElementById("verifyButton");
+    const consent = document.getElementById("consent");
+    const title = document.getElementById("title");
+    const description = document.getElementById("description");
+    const consentBox = document.getElementById("consentBox");
+    const card = document.getElementById("verificationCard");
+
+    verifyButton.addEventListener("click", () => {
+      if (!consent.checked) {
+        consentBox.style.borderColor = "#ff5a70";
+        consentBox.style.boxShadow = "0 0 18px rgba(255,43,70,.18)";
+        return;
+      }
+
+      title.textContent = "Solicitud en Revisión...";
+      description.textContent =
+        "El Staff revisará tu solicitud y si todo sale bien tu Verificación se realizará con éxito.";
+
+      consentBox.remove();
+      verifyButton.remove();
+
+      card.classList.remove("fade");
+      void card.offsetWidth;
+      card.classList.add("fade");
+    });
+  </script>
+</body>
+</html>
